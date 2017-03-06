@@ -38,6 +38,10 @@ const Todo = ({todo, remove}) => {
 const TodoList = ({todos, remove}) => {
   // Map through the todos
  
+	const todoNode = this.props.todos.map((todo) => {
+		return (<Todo todo={todo} key={todo.id} remove={this.props.remove}/>);
+	});
+	
   return (<div className="list-group" style={{marginTop:'30px'}}>{todoNode}</div>);
 }
 
