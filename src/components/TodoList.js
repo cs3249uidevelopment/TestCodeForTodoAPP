@@ -36,7 +36,7 @@ const Todo =  React.createClass({
 	render: function() {
 		 return (
 			<li>
-				<a href="#" className="list-group-item" onClick={() => {this.props.remove(this.props.todo.id)}}>{this.props.todo.id}: {this.props.todo.text}</a>
+				<a href="#" className="list-group-item" onClick={() => {this.props.remove(this.props.todo.key)}}>ID :{this.props.todo.key} / Text : {this.props.todo.text}</a>
 			</li>
 		);
 	}
@@ -46,7 +46,7 @@ const TodoList = React.createClass({
 	render: function() {
 		// Map through the todos
 		const todoNode = this.props.todos.map((todo) => {
-			return (<Todo todo={todo} key={todo.id} remove={this.props.remove}/>);
+			return (<Todo todo={todo} key={todo.key} remove={this.props.remove}/>);
 		});
 		
 		return (
@@ -58,6 +58,8 @@ const TodoList = React.createClass({
 // Container Component
 // Todo Id
 window.id = 0;
+// Temporary array for local DB
+var todos = new Array();
 
 class TodoApp extends React.Component{
 	constructor(props){
@@ -67,7 +69,6 @@ class TodoApp extends React.Component{
 		this.state = {
 			data: []
 		}
-		this.apiUrl = '//57b1924b46b57d1100a3c3f8.mockapi.io/api/todos'
 	}
 	
 	// Lifecycle method
@@ -76,34 +77,34 @@ class TodoApp extends React.Component{
 	// https://facebook.github.io/react/docs/react-component.html#componentdidmount
 	componentDidMount(){
 		// Make HTTP reques with Axios
-		axios.get(this.apiUrl).then((res) => {
-			// Set state with result
-			this.setState({data:res.data});
-		});
+		// Set state with result
+		this.setState({data:todos});
 	}
 	
 	// Add todo handler
 	addTodo(val){
 		// Assemble data
-		const todo = {text: val}
+		const todo = {
+								text : val,
+								key : (new Date()).getTime()
+							  }
 		// Update data
-		axios.post(this.apiUrl, todo).then((res) => {
-			this.state.data.push(res.data);
-			this.setState({data: this.state.data});
-       });
+		todos.push(todo);
+		// Set the state value by using the local DB array
+		this.setState({data: todos});
 	}
   
 	// Handle remove
-	handleRemove(id){
+	handleRemove(key){
 		// Filter all todos except the one to be removed
 		const remainder = this.state.data.filter((todo) => {
-			if(todo.id !== id) return todo;
+			if(todo.key !== key) return todo;
 		});
-    
+	
+		// Replace the local DB array with new DB array excluding the removed item
+		todos = remainder;
 		// Update state with filter
-		axios.delete(this.apiUrl+'/'+id).then((res) => {
-			this.setState({data: remainder});
-		})
+		this.setState({data: todos});
 	}
  
 	render(){
