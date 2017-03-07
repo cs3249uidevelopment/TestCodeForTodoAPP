@@ -36,7 +36,7 @@ const Todo =  React.createClass({
 	render: function() {
 		 return (
 			<li>
-				<a href="#" className="list-group-item" onClick={() => {this.props.remove(this.props.todo.id)}}>{this.props.todo.text}</a>
+				<a href="#" className="list-group-item" onClick={() => {this.props.remove(this.props.todo.id)}}>{this.props.todo.id}: {this.props.todo.text}</a>
 			</li>
 		);
 	}
