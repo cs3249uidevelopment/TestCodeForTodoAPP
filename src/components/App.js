@@ -20,14 +20,14 @@ const TodoForm = React.createClass({
 	render: function() {
 		let input;
 		return (
-			    <form onSubmit={(e) => {
-					e.preventDefault();
-					this.props.addTodo(input.value);
-					input.value = '';
-				}}>
-					<input  ref={node => {input = node;}}/>
-					<br />
-				</form>
+		    <form onSubmit={(e) => {
+				e.preventDefault();
+				this.props.addTodo(input.value);
+				input.value = '';
+			}}>
+				<input  ref={node => {input = node;}}/>
+				<br />
+			</form>
 		);
 	}
 });
@@ -85,9 +85,9 @@ class TodoApp extends React.Component{
 	addTodo(val){
 		// Assemble data
 		const todo = {
-								text : val,
-								key : (new Date()).getTime()
-							  }
+			text : val,
+			key : (new Date()).getTime()
+		  }
 		// Update data
 		todos.push(todo);
 		// Set the state value by using the local DB array
@@ -111,19 +111,19 @@ class TodoApp extends React.Component{
 		// Render JSX
 		return (
 		<div>
-			<Title
-				//passing state date to a child as props
-				todoCount={this.state.data.length}
-			/>
-			<TodoForm
-				//passing state date to a child as props
-				addTodo={this.addTodo.bind(this)}
-			/>
-			<TodoList 
-				//passing state date to a child as props
-				todos={this.state.data} 
-				remove={this.handleRemove.bind(this)}
-			/>
+		<Title
+		//passing state date to a child as props
+		todoCount={this.state.data.length}
+		/>
+		<TodoForm
+		//passing state date to a child as props
+		addTodo={this.addTodo.bind(this)}
+		/>
+		<TodoList 
+		//passing state date to a child as props
+		todos={this.state.data} 
+		remove={this.handleRemove.bind(this)}
+		/>
 		</div>
     );
   }
